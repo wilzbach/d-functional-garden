@@ -170,7 +170,7 @@ buttons {
  * Side drawer CSS
  */
 #sidedrawer-brand {
-  padding-left: 12px;
+    text-align: center;
     font-weight:300;
 }
 
