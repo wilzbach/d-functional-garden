@@ -1,2 +1,20 @@
-# d-functional-garden
+d-functional-garden
+===================
+
 Functional garden for the D Language
+
+The Functional DLang Garden provides a variety of snippets that can be used to learn D or as a quick reference.
+
+All samples are valid code and tested on every run.
+
+Run it yourself
+---------------
+
+```
+dub test && dub
+```
+
+Contribute
+----------
+
+Contributions are more than welcome - just send a PR.
