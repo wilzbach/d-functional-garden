@@ -14,6 +14,24 @@ body{
     font-size: 16px;
     text-decoration: none;
 }
+
+#header li{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#header li a{
+    color: #fff;
+    font-size: 16px;
+}
+
+#header-title-span{
+    float: right;
+    display: inline-block;
+    margin-top: 20px;
+    margin-right: 120px;
+}
+
 @media (min-width: 544px){
 #github-badge{
     top: 194px;
@@ -188,7 +206,7 @@ buttons {
 
 #sidedrawer a{
   display: block;
-  padding: 15px 22px;
+  padding: 5px 0px;
   cursor: pointer;
 }
 
@@ -199,3 +217,16 @@ buttons {
 #sidedrawer a+ ul > li {
   padding: 6px 0px;
 }
+/*
+::-webkit-scrollbar {
+    width: 10px;
+}
+*/
+
+/*
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 1ex;
+    -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+}
+*/
+
