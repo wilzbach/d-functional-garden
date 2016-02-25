@@ -72,6 +72,7 @@ struct name
     import std.array: array;
     int[] qs(int[] arr) {
         if(!arr.length) return [];
+        if(arr.length == 1) return arr;
         return qs(arr.filter!(a => a < arr[0]).array) ~ arr[0] ~ qs(arr[1..$].filter!(a => a >= arr[0]).array);
     }
     assert([1,2,3,4] == qs([3,2,1,4]));
