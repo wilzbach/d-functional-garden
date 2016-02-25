@@ -7,7 +7,7 @@ Functional garden for the D Language
 
 The Functional DLang Garden provides a variety of snippets that can be used to learn D or as a quick reference.
 
-All samples are valid code and tested on every run.
+All samples are valid code and tested on every run (dmd, ldc).
 
 Run it yourself
 ---------------

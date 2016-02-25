@@ -1,5 +1,5 @@
 language: d
 d:
   - dmd
-  - gdc
+#  - gdc
   - ldc
