@@ -170,7 +170,8 @@ buttons {
  * Side drawer CSS
  */
 #sidedrawer-brand {
-  padding-left: 20px;
+  padding-left: 12px;
+    font-weight:300;
 }
 
 #sidedrawer ul {

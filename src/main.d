@@ -62,7 +62,7 @@ Test[] parseTests(string filename){
         if (auto id = d.unittest_) {
             string text;
             foreach(i,k;id.blockStatement.declarationsAndStatements.declarationsAndStatements){
-                //auto decl = k.declaration;
+                auto decl = k.declaration;
                 auto stmt = k.statement;
                 string line;
                 if(stmt !is null){
@@ -70,6 +70,8 @@ Test[] parseTests(string filename){
                     if(noCaseDefault !is null){
                         line = "\n" ~ (cast(char[]) fileBytes[noCaseDefault.startLocation..noCaseDefault.endLocation]).to!string;
                     }
+                }else{
+
                 }
                 if(line.length == 0){
                     line = formatNode(k);
