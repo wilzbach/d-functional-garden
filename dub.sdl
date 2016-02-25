@@ -1,0 +1,7 @@
+name "d-functional-garden"
+description "D Functional garden"
+copyright "Copyright © 2016, greenify"
+authors "greenify"
+dependency "libdparse" version="~>0.5"
+dependency "diet-ng" version="~>0.1"
+mainSourceFile "src/main.d"
