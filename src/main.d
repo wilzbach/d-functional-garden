@@ -1,4 +1,5 @@
 import dparse.lexer;
+import dparse.ast;
 import dparse.parser;
 import std.stdio;
 import std.conv;
@@ -31,6 +32,37 @@ string slug(string target) {
 
     return ret;
 }
+string format(ref ubyte[] fileBytes, const BlockStatement blockstmt){
+    string text;
+    foreach(i,k;blockstmt.declarationsAndStatements.declarationsAndStatements){
+        auto decl = k.declaration;
+        auto stmt = k.statement;
+        string line;
+        if(stmt !is null){
+            auto noCaseDefault = stmt.statementNoCaseNoDefault;
+            if(noCaseDefault !is null){
+                line = (cast(char[]) fileBytes[noCaseDefault.startLocation..noCaseDefault.endLocation+1]).to!string;
+                if(line[0] != '\n'){
+                    line = "\n" ~ line;
+                }
+            }
+        }else{
+            if (auto fun = decl.functionDeclaration) {
+                auto header = fun.returnType.formatNode ~ " " ~ fun.name.formatNode ~ fun.parameters.formatNode ~ " {";
+                auto block = fun.functionBody.blockStatement;
+                line = "\n" ~ header ~ format(fileBytes, block).split('\n').join("\n     ") ~ "\n}";
+            }
+        }
+        if(line.length == 0){
+            line = formatNode(k);
+        }
+        if(line[0..2] == "\n\n"){
+            line = line[1..$];
+        }
+        text ~= line;
+    }
+    return text;
+}
 
 struct Test{
     string name;
@@ -60,30 +92,8 @@ Test[] parseTests(string filename){
             }
         }
         if (auto id = d.unittest_) {
-            string text;
-            foreach(i,k;id.blockStatement.declarationsAndStatements.declarationsAndStatements){
-                auto decl = k.declaration;
-                auto stmt = k.statement;
-                string line;
-                if(stmt !is null){
-                    auto noCaseDefault = stmt.statementNoCaseNoDefault;
-                    if(noCaseDefault !is null){
-                        line = (cast(char[]) fileBytes[noCaseDefault.startLocation..noCaseDefault.endLocation+1]).to!string;
-                        if(line[0] != '\n'){
-                            line = "\n" ~ line;
-                        }
-                    }
-                }else{
-
-                }
-                if(line.length == 0){
-                    line = formatNode(k);
-                }
-                if(line[0..2] == "\n\n"){
-                    line = line[1..$];
-                }
-                text ~= line;
-            }
+            string text = format(fileBytes, id.blockStatement);
+            
             //writeln(text);
             // remove first and list newline
             if(text[0] == '\n'){

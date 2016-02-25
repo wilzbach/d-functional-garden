@@ -1,7 +1,7 @@
 {
 	"fileVersion": 1,
 	"versions": {
-		"libdparse": "0.5.0",
+		"libdparse": "~master",
 		"diet-ng": "~master",
 		"experimental_allocator": "2.70.0-b1"
 	}
