@@ -68,7 +68,10 @@ Test[] parseTests(string filename){
                 if(stmt !is null){
                     auto noCaseDefault = stmt.statementNoCaseNoDefault;
                     if(noCaseDefault !is null){
-                        line = "\n" ~ (cast(char[]) fileBytes[noCaseDefault.startLocation..noCaseDefault.endLocation]).to!string;
+                        line = (cast(char[]) fileBytes[noCaseDefault.startLocation..noCaseDefault.endLocation+1]).to!string;
+                        if(line[0] != '\n'){
+                            line = "\n" ~ line;
+                        }
                     }
                 }else{
 
@@ -76,8 +79,12 @@ Test[] parseTests(string filename){
                 if(line.length == 0){
                     line = formatNode(k);
                 }
+                if(line[0..2] == "\n\n"){
+                    line = line[1..$];
+                }
                 text ~= line;
             }
+            //writeln(text);
             // remove first and list newline
             if(text[0] == '\n'){
                 text = text[1..$];
