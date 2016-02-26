@@ -116,7 +116,7 @@ Test[] parseTests(string filename){
             }
             string desc = id.comment;
             // poor man's hack to get new lines
-            desc.replaceAll("\n","<br>");
+            desc = desc.replace("\n","<br>");
             tests ~= [Test(name, text, name.slug, desc)];
         }
     }
