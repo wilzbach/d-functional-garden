@@ -32,6 +32,20 @@ string slug(string target) {
 
     return ret;
 }
+
+void log(T)(T obj) {
+  static if (is(T == struct) || is(T == class)){
+     writef("{");
+     foreach(i,_;obj.tupleof) {
+       writefln("%s : %s,", obj.tupleof[i].stringof[4..$], obj.tupleof[i]);
+     }
+     writefln("}");
+  }
+  else {
+     writefln(obj);
+  }
+}
+
 string format(ref ubyte[] fileBytes, const BlockStatement blockstmt){
     string text;
     foreach(i,k;blockstmt.declarationsAndStatements.declarationsAndStatements){
@@ -68,6 +82,7 @@ struct Test{
     string name;
     string text;
     string slug;
+    string desc;
 }
 
 Test[] parseTests(string filename){
@@ -99,7 +114,10 @@ Test[] parseTests(string filename){
             if(text[0] == '\n'){
                 text = text[1..$];
             }
-            tests ~= [Test(name, text, name.slug)];
+            string desc = id.comment;
+            // poor man's hack to get new lines
+            desc.replaceAll("\n","<br>");
+            tests ~= [Test(name, text, name.slug, desc)];
         }
     }
     return tests;

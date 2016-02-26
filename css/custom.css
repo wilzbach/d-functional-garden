@@ -2,6 +2,9 @@
     overflow: auto;
     white-space: pre-wrap;
 }
+.code-desc{
+    padding-top: 10px;
+}
 body{
     background-color: #eee;
 }
