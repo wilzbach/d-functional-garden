@@ -18,6 +18,10 @@ body{
     text-decoration: none;
 }
 
+#sidedrawer-list li.active{
+    background-color: #E0E0E0;
+}
+
 #header li{
     padding-left: 15px;
     padding-right: 15px;
@@ -197,6 +201,7 @@ buttons {
 
 #sidedrawer ul {
   list-style: none;
+  padding-left: 15px;
 }
 
 #sidedrawer > ul {
