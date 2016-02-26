@@ -52,15 +52,19 @@ jQuery(function($) {
     // Bind to scroll
     $(window).scroll(function(){
        // Get container scroll position
-       var fromTop = $(this).scrollTop()+topOffset;
+       var fromTop = $(this).scrollTop();
     
        // Get id of current scroll item
-       var cur = scrollItems.map(function(){
-         if ($(this).offset().top < fromTop)
-           return this;
+       var curDist = 100000;
+       var cur = this;
+       scrollItems.each(function(i, el){
+        var newDist = el.offset().top - fromTop;
+         if (newDist < curDist && newDist >= 0){
+             curDist = newDist;
+             cur = el;
+         }
        });
        // Get the id of the current element
-       cur = cur[cur.length-1];
        var id = cur && cur.length ? cur[0].id : "";
        // Set/remove active class
        menuItems
