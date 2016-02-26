@@ -37,6 +37,13 @@ struct name
     assert(3 == [1,3,2,2,3].sort().uniq.count);
 }
 
+@name("Pairwise sum") @safe unittest{
+    import std.algorithm: map, sum;
+    import std.array: array;
+    import std.range: chunks;
+    assert([1,2,3,4].chunks(2).map!(sum).array == [3,7]);
+}
+
 @name("Split string to ints") @safe unittest{
     import std.algorithm: map, splitter;
     import std.array: array;
