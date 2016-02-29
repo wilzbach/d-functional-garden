@@ -20,3 +20,10 @@ Contribute
 ----------
 
 Contributions are more than welcome - just send a PR.
+
+
+How to add a new D snippet?
+---------------------------
+
+Go to [functional.d](https://github.com/greenify/d-functional-garden/blob/master/src/functional.d) and add your snippet as new unittest.
+You can run the tests with `dub test` or `rdmd -unittest --main functional.d`.
