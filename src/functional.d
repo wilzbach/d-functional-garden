@@ -77,13 +77,14 @@ We split our input range into chunks of the size two and calculate the sum for e
 }
 
 /**
-Use a dict - this doesn't require sorting
+This approach requires sorting the array.
+Use a dict (below) - it doesn't require sorting.
 */
 @name("Count chars") unittest{
     import std.array: array;
     import std.algorithm: sort, group;
-    auto res = "ABCA".array.sort().group.array;
     import std.typecons: tuple; // create tuples manually
+    auto res = "ABCA".array.sort().group.array;
     auto expected = [tuple('A', 2), tuple('B', 1), tuple('C', 1)];
     assert(expected == cast(typeof(expected)) res);
 }
