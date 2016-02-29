@@ -201,7 +201,7 @@ buttons {
 
 #sidedrawer ul {
   list-style: none;
-  padding-left: 15px;
+  padding-left: 0px;
 }
 
 #sidedrawer > ul {
@@ -214,7 +214,7 @@ buttons {
 
 #sidedrawer a{
   display: block;
-  padding: 5px 0px;
+  padding: 5px 0px 5px 15px;
   cursor: pointer;
 }
 
