@@ -149,13 +149,14 @@ The syntax to convert a tuple back to list is a bit hard to figure out.
 }
 
 @name("Filter by index") @safe unittest{
-    import std.range: chain;
+    import std.range: chain, zip;
     import std.typecons;
-    import std.algorithm : max, reduce, sum;
+    import std.algorithm : map, max, reduce, sum;
+    import std.array: array;
 
     auto a = tuple([1, 2, 3], [4, 5, 6], [7, 8, 9]);
     auto ab = a.array.map!"a.sum";
-    auto ac = zip(ab[]).map!"sum(a[].only)";
+    auto ac = zip(ab).map!"sum(a[].only)";
     assert(ab.chain(ac).reduce!max == 24);
 }
 
