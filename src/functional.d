@@ -209,6 +209,46 @@ Yet another good example of group.
 }
 
 /**
+reverseArgs can be used to continue using the result in a UFCS pipe
+*/
+@name("Format a range pipeline") @safe unittest{
+    import std.algorithm : filter, map, sum;
+    import std.range : iota;
+    import std.format : format;
+    import std.functional : reverseArgs;
+
+    auto res = 6.iota
+      .filter!(a => a % 2) // 0 2 4
+      .map!(a => a * 2) // 0 4 8
+      .sum
+      .reverseArgs!format("Sum: %d");
+    assert(res == "Sum: 18");
+}
+
+/**
+With cumulativeFold a lazy, stack-based parser can be written
+*/
+@name("Lazy parser") @safe unittest{
+    import std.algorithm : cumulativeFold, equal, map, until;
+    import std.range : zip;
+    auto input = "foo()bar)";
+    auto result = input.cumulativeFold!((count, r){
+        switch(r)
+        {
+            case '(':
+                count++;
+                break;
+            case ')':
+                count--;
+                break;
+            default:
+        }
+        return count;
+    })(1).zip(input).until!(e => e[0] == 0).map!(e => e[1]);
+    assert(result.equal("foo()bar"));
+}
+
+/**
 This is a good example how expressive functional programming can be.
 Also note that the second base case is not necessary.
 */
