@@ -26,14 +26,15 @@ With map we can call a custom function for every element
 }
 
 /**
-With reduce we can apply a function with a starting value and call it with
-the memo and the current value for all values.
+With fold we can apply a function to all elements by calling the function with
+the current result and the value of every element, optionally starting with a
+specific value.
 */
-@name("Reduce to minimum") @safe unittest{
-    import std.algorithm: min, max, reduce;
-    auto result = [3, 2, 1].reduce!min;
+@name("Reduce to minimum or maximum") @safe unittest{
+    import std.algorithm: min, max, fold;
+    auto result = [3, 2, 1].fold!min;
     assert(result == 1);
-    result = [3, 2, 1].reduce!max;
+    result = [3, 2, 1].fold!max;
     assert(result == 3);
 }
 
@@ -151,13 +152,13 @@ The syntax to convert a tuple back to list is a bit hard to figure out.
 @name("Filter by index") @safe unittest{
     import std.range: chain, zip;
     import std.typecons;
-    import std.algorithm : map, max, reduce, sum;
+    import std.algorithm : map, max, fold, sum;
     import std.array: array;
 
     auto a = tuple([1, 2, 3], [4, 5, 6], [7, 8, 9]);
     auto ab = a.array.map!"a.sum";
     auto ac = zip(ab).map!"sum(a[].only)";
-    assert(ab.chain(ac).reduce!max == 24);
+    assert(ab.chain(ac).fold!max == 24);
 }
 
 /**
