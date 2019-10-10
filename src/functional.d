@@ -3,8 +3,8 @@
 Guidelines:
     - Please don't use global imports of the functions you want to show.
         (Every test should be independent.)
-    - Add one line between imports and your tests if you have more than one
-        import line
+    - Add one line between the imports and your tests if you have more than one
+        import line.
 */
 
 // we use this comparison method a lot
@@ -17,7 +17,7 @@ struct name
 }
 
 /**
-With map we can call a custom function for every element
+With map we can call a custom function for every element.
 */
 @name("Increment elements") @safe unittest{
     import std.algorithm: map;
@@ -26,19 +26,20 @@ With map we can call a custom function for every element
 }
 
 /**
-With reduce we can apply a function with a starting value and call it with
-the memo and the current value for all values.
+With fold we can apply a function to all elements by calling the function with
+the current result and the value of every element, optionally starting with a
+specific value.
 */
-@name("Reduce to minimum") @safe unittest{
-    import std.algorithm: min, max, reduce;
-    auto result = [3, 2, 1].reduce!min;
+@name("Reduce to minimum or maximum") @safe unittest{
+    import std.algorithm: min, max, fold;
+    auto result = [3, 2, 1].fold!min;
     assert(result == 1);
-    result = [3, 2, 1].reduce!max;
+    result = [3, 2, 1].fold!max;
     assert(result == 3);
 }
 
 /**
-We can also filter our input range with custom functions
+We can also filter our input range with custom functions.
 */
 @name("Filter elements") @safe unittest{
     import std.algorithm: count, filter;
@@ -51,7 +52,7 @@ We can also filter our input range with custom functions
 }
 
 /**
-Sort accepts a pred template, which means we can just pass our own
+Sort accepts a predicate, which means we can just pass our own.
 */
 @name("Reverse sort") @safe unittest{
     import std.algorithm: sort;
@@ -96,7 +97,7 @@ We split our input range into chunks of the size two and calculate the sum for e
 
 /**
 This approach requires sorting the array.
-Use a dict (below) - it doesn't require sorting.
+Using a dictionary as shown below doesn't require sorting.
 */
 @name("Count chars") unittest{
     import std.array: array;
@@ -107,16 +108,16 @@ Use a dict (below) - it doesn't require sorting.
     auto expected = [tuple('A', 2),
                      tuple('B', 1),
                      tuple('C', 1)];
-    assert(expected == cast(typeof(expected)) result);
+    assert(result.equal(expected));
 }
 
 /**
 We can iterate pairwise over all k-mer and list them.
-The syntax to convert a tuple back to list is a bit hard to figure out.
+The syntax to convert a tuple back to a list is a bit hard to figure out.
 */
 @name("List k-mer") unittest{
-    import std.algorithm: map;
-    import std.array: array, join;
+    import std.algorithm: joiner, map;
+    import std.array: array;
     import std.range: dropOne, only, save, zip;
     import std.conv: to;
 
@@ -124,16 +125,16 @@ The syntax to convert a tuple back to list is a bit hard to figure out.
     auto result = arr.zip(arr.save.dropOne)
                      .map!"a.expand.only"
                      .map!(to!string)
-                     .join(",");
-    assert(result == "AG,GC,CG,GA");
+                     .joiner(",");
+    assert(result.equal("AG,GC,CG,GA"));
 }
 
 /**
 We iterate over all pairs of the string and increment a key in our dictionary.
-In D a new key is automatically created once it is accessed for the first time.
-The syntax to convert a tuple back to list is a bit hard to figure out.
+In D a new key is automatically created once it is assigned to for the first
+time. The syntax to convert a tuple back to list is a bit hard to figure out.
 */
-@name("Count k-mer with defaultdict") unittest{
+@name("Count k-mer with associative array (dictionary)") unittest{
     import std.array: array;
     import std.algorithm: each, map;
     import std.range: dropOne, only, save, zip;
@@ -151,17 +152,18 @@ The syntax to convert a tuple back to list is a bit hard to figure out.
 @name("Filter by index") @safe unittest{
     import std.range: chain, zip;
     import std.typecons;
-    import std.algorithm : map, max, reduce, sum;
+    import std.algorithm : map, max, fold, sum;
     import std.array: array;
 
     auto a = tuple([1, 2, 3], [4, 5, 6], [7, 8, 9]);
     auto ab = a.array.map!"a.sum";
     auto ac = zip(ab).map!"sum(a[].only)";
-    assert(ab.chain(ac).reduce!max == 24);
+    assert(ab.chain(ac).fold!max == 24);
 }
 
 /**
-With enumerate we get an index which we can use to filter
+With enumerate we get an index which can be used for filtering. The index value
+and the element are available as the .index and .value properties.
 */
 @name("Filter by index") @safe unittest{
     import std.algorithm: filter, map;
@@ -169,22 +171,22 @@ With enumerate we get an index which we can use to filter
 
     auto result = [3, 4, 5]
                     .enumerate
-                    .filter!(a => a[0] != 1)
-                    .map!"a[1]";
+                    .filter!(a => a.index != 1)
+                    .map!(a => a.value);
     assert(result.equal([3, 5]));
 }
 
 /**
 With enumerate we get an index with which we can remove all odd numbers.
 */
-@name("Sum up even indexed number") @safe unittest{
+@name("Sum up numbers that have even indexes") @safe unittest{
     import std.algorithm: filter, map, sum;
     import std.range: enumerate;
 
     auto result = [3, 4, 5]
                     .enumerate
-                    .filter!(a => a[0] % 2 == 0)
-                    .map!"a[1]"
+                    .filter!(a => a.index % 2 == 0)
+                    .map!"a.value"
                     .sum;
     assert(result == 8);
 }
@@ -192,7 +194,7 @@ With enumerate we get an index with which we can remove all odd numbers.
 /**
 Yet another good example of group.
 */
-@name("Most common word") @safe unittest{
+@name("Count words") @safe unittest{
     import std.algorithm: group, map, sort;
     import std.array: split;
     import std.string: toLower;
@@ -209,7 +211,7 @@ Yet another good example of group.
 }
 
 /**
-reverseArgs can be used to continue using the result in a UFCS pipe
+reverseArgs can be used to continue using the result in a UFCS pipe.
 */
 @name("Format a range pipeline") @safe unittest{
     import std.algorithm : filter, map, sum;
@@ -218,19 +220,20 @@ reverseArgs can be used to continue using the result in a UFCS pipe
     import std.functional : reverseArgs;
 
     auto res = 6.iota
-      .filter!(a => a % 2) // 0 2 4
-      .map!(a => a * 2) // 0 4 8
+      .filter!(a => a % 2) // 1 3 5
+      .map!(a => a * 2) // 2 6 10
       .sum
       .reverseArgs!format("Sum: %d");
     assert(res == "Sum: 18");
 }
 
 /**
-With cumulativeFold a lazy, stack-based parser can be written
+With cumulativeFold a lazy, stack-based parser can be written.
 */
 @name("Lazy parser") @safe unittest{
     import std.algorithm : cumulativeFold, equal, map, until;
     import std.range : zip;
+
     auto input = "foo()bar)";
     auto result = input.cumulativeFold!((count, r){
         switch(r)
@@ -249,8 +252,8 @@ With cumulativeFold a lazy, stack-based parser can be written
 }
 
 /**
-This is a good example how expressive functional programming can be.
-Also note that the second base case is not necessary.
+This is a good example of how expressive functional programming can be. Also
+note that the second base case is not necessary.
 */
 @name("Quicksort") @safe unittest{
     import std.algorithm: filter;
